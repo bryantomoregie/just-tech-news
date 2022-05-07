@@ -5,6 +5,7 @@ const { Post, User, Comment, Vote } = require("../models");
 // get all posts for homepage
 router.get("/", (req, res) => {
   console.log("======================");
+  console.log(req.session);
   Post.findAll({
     attributes: [
       "id",
@@ -36,12 +37,21 @@ router.get("/", (req, res) => {
     .then((dbPostData) => {
       const posts = dbPostData.map((post) => post.get({ plain: true })); //get({ plain: true }), serialize the object down to only the properties you need, 14.1.6
 
-      res.render("homepage", { posts });
+      res.render("homepage", { posts }); //This is how we are passing models "variables" to the template 14.2.3
     })
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
+});
+
+router.get("/login", (req, res) => {
+  if (req.session.loggedIn) {
+    res.redirect("/");
+    return;
+  }
+
+  res.render("login");
 });
 
 module.exports = router;
