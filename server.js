@@ -3,7 +3,8 @@ const routes = require("./controllers");
 const sequelize = require("./config/connection");
 const path = require("path");
 const exphbs = require("express-handlebars");
-const hbs = exphbs.create({});
+const helpers = require("./utils/helpers");
+const hbs = exphbs.create({ helpers });
 const session = require("express-session");
 //This code sets up an Express.js session and connects the session to our Sequelize database.
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
